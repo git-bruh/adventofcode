@@ -1,4 +1,5 @@
 import sys
+import itertools
 
 matrix = []
 
@@ -35,9 +36,12 @@ def flash_adjacent(row, col, buf, flashed):
             pass
 
 
-num_flashed = 0
+PART2 = True
 
-for _ in range(100):
+result = 0
+iterator = itertools.count(1) if PART2 else range(100)
+
+for step in iterator:
     flashed = {}
 
     for row_index, row in enumerate(matrix):
@@ -53,9 +57,14 @@ for _ in range(100):
         row, col = flash
         matrix[row][col] = 0
 
-    num_flashed += len(flashed)
+    if PART2 and len(flashed) == len(matrix) * len(matrix[0]):
+        result = step
+        break
+
+    if not PART2:
+        result += len(flashed)
 
 for line in matrix:
     print(*line, sep="")
 
-print(num_flashed)
+print(result)
